@@ -1,0 +1,27 @@
+Android Studio
+インストール方法
+※JDKがすでにインストールしてある場合は、Androiud StudioのインストールのみでOK
+JDKのインストール
+1.以下のURLにアクセスして、Accept Licence Agreementのラジオボタンを押し、自分にあったものをダウンロードする。
+（windowsの64ビットなら、Windows x64）
+http://www.oracle.com/technetwork/java/javase/downloads/index.html
+
+2.保存されたファイルを実行
+3.次へを押してセットアップを開始
+4.インストールが完了したら
+5.インストールが終わったら、パスを通す
+  a.スタートメニューを開き、コントロールパネル→システムとセキュリティ→システムをたどる
+  b.システムの詳細設定を選択
+  c.環境変数を選択し、環境変数を設定するタブを開く
+  d.ユーザー環境変数内の新規を選択（ユーザー環境変数内にJAVA_HOMEがある場合、それを選択）
+  e.変数名を「JAVA_HOME」にし、変数値は先ほどインストールJDKのパスにする。（JDKのパスがC:Program Files\Java\jdk1.7.0_21の場合、これを記入または追記）
+  f.編集が完了したら、OKを押す
+6.コマンドプロンプトを開き「java -version」と実行し、エラーが出なかったらOK
+
+Androiud Studioのインストール
+1.以下のサイトにアクセスして、「Download Android Studio for Windows」を選択
+http://developer.android.com/sdk/installing/studio.html
+2.ライセンス条項を確認して、同意できたら下のチェックボックスにクリックを入れてダウンロード開始。
+3.ダウンロードが終わったら、インストールしたexeを起動
+4.nextを押していってインストールを開始する。（途中でインストールするパスを聞かれたりするので、変更するなら変更する）
+5.インストールが終わったらFinish!
