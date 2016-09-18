@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A39A10DB-70ED-419B-A561-ECD9F7A5118E}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>NidusAvis</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>D:\TAKADA\to-se\NidusAvis\Lib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(ReferencePath);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3dx10.lib;d3d10.lib;d3dx9.lib;d3d9.lib;Dsound.lib;%(AdditionalDependencies)kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Lib\CTask.cpp" />
+    <ClCompile Include="Lib\DxFont.cpp" />
+    <ClCompile Include="Lib\DxInput.cpp" />
+    <ClCompile Include="Lib\DxSound.cpp" />
+    <ClCompile Include="Lib\DxSprite.cpp" />
+    <ClCompile Include="Lib\DxTexture.cpp" />
+    <ClCompile Include="Lib\DxWin.cpp" />
+    <ClCompile Include="Source\BgFuncs.cpp" />
+    <ClCompile Include="Source\BorderLine.cpp" />
+    <ClCompile Include="Source\CharLetter.cpp" />
+    <ClCompile Include="Source\Cross.cpp" />
+    <ClCompile Include="Source\Cursor.cpp" />
+    <ClCompile Include="Source\Darken.cpp" />
+    <ClCompile Include="Source\DrectXSound.cpp" />
+    <ClCompile Include="Source\Egg.cpp" />
+    <ClCompile Include="Source\EggShell.cpp" />
+    <ClCompile Include="Source\GameOver.cpp" />
+    <ClCompile Include="Source\GamePose.cpp" />
+    <ClCompile Include="Source\GamePoseControl.cpp" />
+    <ClCompile Include="Source\GameScore.cpp" />
+    <ClCompile Include="Source\GameSystem.cpp" />
+    <ClCompile Include="Source\GameTitle.cpp" />
+    <ClCompile Include="Source\InPonit.cpp" />
+    <ClCompile Include="Source\InfoReadSystem.cpp" />
+    <ClCompile Include="Source\Life.cpp" />
+    <ClCompile Include="Source\LifeControl.cpp" />
+    <ClCompile Include="Source\Line.cpp" />
+    <ClCompile Include="Source\NiduAvis.cpp" />
+    <ClCompile Include="Source\ScoreControl.cpp" />
+    <ClCompile Include="Source\ScoreLetter.cpp" />
+    <ClCompile Include="Source\ScoreNumber.cpp" />
+    <ClCompile Include="Source\SetSound.cpp" />
+    <ClCompile Include="Source\SetTexture.cpp" />
+    <ClCompile Include="Source\SmallBird.cpp" />
+    <ClCompile Include="Source\CharacterTitle.cpp" />
+    <ClCompile Include="Source\SoundFuncs.cpp" />
+    <ClCompile Include="Source\StartLetter.cpp" />
+    <ClCompile Include="Source\TextureFuncs.cpp" />
+    <ClCompile Include="Source\WinMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Lib\include\CTask.h" />
+    <ClInclude Include="Lib\include\Define.h" />
+    <ClInclude Include="Lib\include\DxFont.h" />
+    <ClInclude Include="Lib\include\DxInput.h" />
+    <ClInclude Include="Lib\include\DxSound.h" />
+    <ClInclude Include="Lib\include\DxSprite.h" />
+    <ClInclude Include="Lib\include\DxTexture.h" />
+    <ClInclude Include="Lib\include\DxWin.h" />
+    <ClInclude Include="Lib\include\Macro.h" />
+    <ClInclude Include="Lib\include\resource.h" />
+    <ClInclude Include="Lib\include\stdafx.h" />
+    <ClInclude Include="Source\GamePoseControl.h" />
+    <ClInclude Include="Source\GameSystem.h" />
+    <ClInclude Include="Source\LifeControl.h" />
+    <ClInclude Include="Source\ScoreControl.h" />
+    <ClInclude Include="Source\TaskFuncs.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
