@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "DxSprite.h"
 #include "DxTexture.h"
-#include "Define.h"
 
 //-----------------------------------------------------------------------------
 // m_dwTaskFlag
@@ -23,20 +22,6 @@
 --------------------------------------------------------*/
 class CTaskCtrl
 {
-	
-	INT		m_iGamemode ;		//現在のゲームモードを保持
-	BOOL	m_bNewDownObject ;  //何か落下するフラグ
-	FLOAT	m_fLineAlpha ;		//線をアルファ
-	BOOL	m_bLineTurn ;		//線の向き　TURE＝右上がり　FALSE＝右下がり
-	FLOAT	m_fLineRadian;		//線のラジアン
-	INT		m_iLineCount;		//線の数
-	INT		m_iScore;			//スコア(データ)
-	INT		m_iScoreDisplay;	//スコア(表示用)
-	INT		m_iLife;			//残機の保持
-	BOOL	m_bGamePose;		//ゲームのポーズフラグ
-	FLOAT	m_fBorderLine;		//境界線
-	BOOL	m_bStartFlg;		//スタートフラグ
-
 	BYTE	*m_pbTaskHeap ;		// ヒープエリア
 	DWORD	m_dwMemSize ;		// ヒープサイズ		
 	BOOL	m_bDefrag ;			//
@@ -75,74 +60,6 @@ public:
 	DWORD isMemSize() { return ( m_dwMemSize ) ; }
 	DWORD isUseSize() { return ( m_dwSize ) ; }
 	DWORD isCount() { return ( m_dwCount ) ; }
-
-	//ゲームモードを渡す
-	INT isGetGameMode() { return (m_iGamemode); }
-	//ゲームモードをセットする
-	VOID SetGameMode(INT gamemode);
-	
-	//新しくオブジェクト落とすフラグを渡す
-	BOOL isGetNewDownObject() { return (m_bNewDownObject); }
-	//新しくオブジェクト落とすフラグをセットする
-	VOID SetNewDownObject(BOOL downflg);
-
-	//線アルファを渡す
-	FLOAT isGetLineAlpha() { return (m_fLineAlpha); }
-	//線アルファをセットする
-	VOID SetLineAlpha(FLOAT linealpha);
-
-	//線の向きを渡す
-	BOOL isGetLineTurn() { return (m_bLineTurn); }
-	//線の向きをセットする
-	VOID SetLineTurn(BOOL turnflg);
-
-	//線のラジアンを渡す
-	FLOAT isGetLineRadian() { return (m_fLineRadian); }
-	//線のラジアンをセットする
-	VOID SetLineDegree(FLOAT radian);
-
-	//スコア（表示用）を数を渡す
-	INT isGetScoreDisplay() { return (m_iScoreDisplay); }
-	//スコア（表示用）をセットする
-	VOID SetScoreDisplay(INT displayscore);
-
-	//スコア(データ)を渡す
-	INT isGetScore() { return (m_iScore); }
-	//スコア(データ)をセットする
-	VOID SetScore(INT score);
-
-	//スコアを初期化する
-	VOID InitScore() ;
-	VOID InitScoreDisplay();
-
-	//残機を取得
-	INT isGetLife(){ return (m_iLife); };
-	//残機のせっと（TRUE＝減算、FALSE＝加算）
-	VOID SetLife(BOOL life);
-	//残機の初期化
-	VOID InitLife();
-
-	//ゲームのポーズフラグを渡す
-	BOOL isGetGamePose() { return (m_bGamePose); }
-	//ゲームのポーズフラグをセットする
-	VOID SetGamePose(BOOL poseflg);
-
-	//境界線を渡す
-	FLOAT isGetBorderLine() { return (m_fBorderLine); }
-	//境界線をセットする
-	VOID SetBorderLine(FLOAT borderline);
-
-	//線の数を渡す
-	INT isGetLineCount() { return (m_iLineCount); }
-	FLOAT isGetLinePoint(INT linecount);
-	//線の数をセットする
-	VOID SetLineCount(INT linecount);
-
-
-	//ゲームスタートフラグを渡す
-	BOOL isGetStartFlg() { return (m_bStartFlg); }
-	//ゲームスタートフラグをセットする
-	VOID SetStartFlg(BOOL startflg);
 
 	void  setDefrag() { m_bDefrag = TRUE ; }
 	DxWin* isDxWin() { return ( m_pSprite->isDxWin() ) ; } 
@@ -194,7 +111,7 @@ protected:
 	FLOAT	m_rotate ;				// 回転
 	D3DXVECTOR2	m_scale ;			// 拡大縮小
 
-	//RECT切り替えようの変数
+	//RECT切り替え用の変数
 	INT m_iPtntimer_Max ;//RECT切り替え時間の最大
 	INT m_iPtntimer ;//RECTの切り替え時間
 	INT m_iPtn ;//現在の画像のパターン番号
@@ -206,17 +123,6 @@ protected:
 	FLOAT m_fPtn_y ;//パターンの座標Y
 	BOOL m_bPtnLoopflg ;//
 	BOOL m_bPtnRetunflg ;//
-
-	//画面移行の際のNEWのカウント
-	FLOAT m_fNew_Count;
-	//画面移行の際のDELETEのカウント
-	FLOAT m_fDelete_Count;
-	//画面移行の際のNEWのフラグ
-	BOOL m_bNew_Flg;
-	//画面移行の際のDELETEのフラグ
-	BOOL m_bDelete_Flg;
-	//自分がどの時に出現するか消えるか持っておく
-	INT m_iMode;
 
 	DxTexture*	m_pDxT ;			// テクスチャー格納ポインタ
 
@@ -250,15 +156,11 @@ public:
 	void setTaskFlag( DWORD flag ) ; 
 	void resetTaskFlag( DWORD flag ) ;
 	BOOL isTaskFlag( DWORD flag ) ;
-	DxTexture* TextureSet( );
-	void GetTexture( DxTexture* g_tex );
+	DxTexture* GetTexture( );
+	void SetTexture( DxTexture* g_tex );
 	void SetRect(long left, long top, long right, long bottom);
 	void SetAlpha();
 	void SetAlpha(int a);
 	void PtnChange();
-	//ゲームモードで自分が出現するかを判断する関数
-	void	ModeNew(CTaskCtrl* g_pCTaskCtrl ,BOOL dispflg);
-	//ゲームモードで自分が消えるか消えないかを判断する関数
-	void	ModeDelete(CTaskCtrl* g_pCTaskCtrl );
 };
 

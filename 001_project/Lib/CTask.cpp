@@ -34,31 +34,6 @@ CTaskCtrl::CTaskCtrl(DWORD dwMemSize, DWORD dwFPS) {
 	m_dwTimePrev = 0 ;
 	m_dwTimeNow = 0 ;
 	m_dwTimeOver = 0 ;
-	
-	//ゲームモードの設定
-	m_iGamemode = GAME_TITLE;
-	//何か落ちるフラグ
-	m_bNewDownObject = false ;
-	//線を消すフラグ
-	m_fLineAlpha = ALPHA_MAX ;
-	//線の向き
-	m_bLineTurn = true ;
-	//線の角度
-	m_fLineRadian = 0.0f;
-	//スコア（データ）
-	m_iScore = 0;
-	//スコア（表示用）
-	m_iScoreDisplay = 0;
-	//残機
-	m_iLife = 0;
-	//ゲームのポーズ
-	m_bGamePose = false ;
-	//境界線の設定
-	m_fBorderLine = BORDERLINE_Y;
-	//線の数カウント
-	m_iLineCount = 0;
-	//ゲームスタートフラグ
-	m_bStartFlg = false ;
 
 	CTaskFunc::m_spCTaskCtrl = this ;		// タスクの本体クラスに制御クラスを通知
 	m_pSprite = NULL ;					// スプライトクラス
@@ -299,161 +274,6 @@ HRESULT CTaskCtrl::DrawAll() {
 	m_pSprite->End() ;			// スプライト描画終了
 	return ( hr ) ;
 }
-/*----------------------------------------------------------
-
-	ゲーム情報の保持、受け渡しの関数
-
------------------------------------------------------------*/
-//ゲームモード
-VOID CTaskCtrl::SetGameMode(INT gamemode){
-
-	m_iGamemode = gamemode ;
-};
-/*----------------------------------------------------------
-
-	落ちるものをNEWしていいかしてはダメかの関数
-
------------------------------------------------------------*/
-VOID CTaskCtrl::SetNewDownObject(BOOL downflg){
-
-	m_bNewDownObject = downflg ;
-};
-
-/*----------------------------------------------------------
-
-	線のアルファ関数
-
------------------------------------------------------------*/
-VOID CTaskCtrl::SetLineAlpha(FLOAT linealpha){
-
-	m_fLineAlpha = linealpha ;
-};
-
-/*----------------------------------------------------------
-
-	線の向き関数
-
------------------------------------------------------------*/
-VOID CTaskCtrl::SetLineTurn(BOOL turnflg){
-
-	m_bLineTurn = turnflg ;
-};
-/*----------------------------------------------------------
-
-	スコア（表示）関数
-
------------------------------------------------------------*/
-VOID CTaskCtrl::SetScoreDisplay(INT displayscore){
-
-	m_iScoreDisplay += displayscore ;
-	
-};
-VOID CTaskCtrl::InitScoreDisplay(){
-
-	m_iScoreDisplay = 0 ;
-};
-/*----------------------------------------------------------
-
-	スコア関数
-
------------------------------------------------------------*/
-VOID CTaskCtrl::SetScore(INT score){
-
-	m_iScore += score ;
-
-};
-VOID CTaskCtrl::InitScore(){
-
-	m_iScore = 0 ;
-};
-/*----------------------------------------------------------
-
-	線のラジアン関数
-
------------------------------------------------------------*/
-VOID CTaskCtrl::SetLineDegree(FLOAT radian){
-
-	m_fLineRadian = radian ;
-};
-/*----------------------------------------------------------
-
-	残機関数
-
------------------------------------------------------------*/
-VOID CTaskCtrl::SetLife(BOOL life){
-
-	if(life)
-	{
-		m_iLife--;
-	}
-	else if(!life)
-	{
-		m_iLife++;
-	}
-
-};
-/*----------------------------------------------------------
-
-	残機初期化関数
-
------------------------------------------------------------*/
-VOID CTaskCtrl::InitLife(){
-
-	m_iLife = 0;
-};
-/*----------------------------------------------------------
-
-	ゲームのポーズの関数
-
------------------------------------------------------------*/
-VOID CTaskCtrl::SetGamePose(BOOL poseflg){
-
-	m_bGamePose = poseflg ;
-};
-/*----------------------------------------------------------
-
-	境界線の設定関数
-
------------------------------------------------------------*/
-VOID CTaskCtrl::SetBorderLine(FLOAT borderline){
-
-	m_fBorderLine = (borderline + 10) ;
-};
-/*----------------------------------------------------------
-
-	線の数関数
-
------------------------------------------------------------*/
-VOID CTaskCtrl::SetLineCount(INT linecount){
-
-	m_iLineCount = linecount ;
-	
-};
-FLOAT CTaskCtrl::isGetLinePoint(INT linecount){
-
-	if(linecount >= 0 && linecount < 20)
-	{
-		return 2.0f;
-	}
-	else if(linecount >= 20 && linecount < 70)
-	{
-		return 1.5f;
-	}
-	else if(linecount >= 70)
-	{
-		return 1.0f;
-	}
-	return 0;
-};
-/*----------------------------------------------------------
-
-	ゲームスタートフラグ関数
-
------------------------------------------------------------*/
-VOID CTaskCtrl::SetStartFlg(BOOL startflg){
-
-	m_bStartFlg = startflg ;
-};
 
 /*========================================================
 
@@ -635,16 +455,6 @@ CTaskFunc::CTaskFunc() {
 	m_iPtn = 0 ;
 	m_iPtninit = 0 ;
 
-	//画面移行の際のNEWのカウント
-	m_fNew_Count = 0 ;
-	//画面移行の際のDELETEのカウント
-	m_fDelete_Count = 0 ;
-	//画面移行の際のNEWのフラグ
-	m_bNew_Flg = false;
-	//画面移行の際のDELETEのフラグ
-	m_bDelete_Flg = false;
-	m_iMode = NULL;
-
 	m_pDxT = NULL ;
 }
 CTaskFunc::~CTaskFunc() {
@@ -713,11 +523,8 @@ void CTaskFunc::After(){
 		}
 		else 
 		{
-			if( (m_spCTaskCtrl->isGetGamePose() == false && m_bNew_Flg == false && m_spCTaskCtrl->isGetStartFlg() ) || (m_spCTaskCtrl->isGetGamePose() == false && m_bNew_Flg == false && m_spCTaskCtrl->isGetGameMode() == GAME_TITLE))
-			{
-				x += dx ;
-				y += dy ;
-			}
+			x += dx ;
+			y += dy ;
 		}
 
 		// コリジョン処理
@@ -1042,7 +849,7 @@ void CTaskFunc::HitOwnParent() {
 /*--------------------------------------------------------
 // テクスチャーのデータのセット
 --------------------------------------------------------*/
-DxTexture* CTaskFunc::TextureSet( ){
+DxTexture* CTaskFunc::GetTexture( ){
 
 	return m_pDxT;
 
@@ -1050,7 +857,7 @@ DxTexture* CTaskFunc::TextureSet( ){
 /*--------------------------------------------------------
 // テクスチャーのデータのセット
 --------------------------------------------------------*/
-void CTaskFunc::GetTexture( DxTexture* g_tex){
+void CTaskFunc::SetTexture( DxTexture* g_tex){
 	if(g_tex)
 	{
 		m_pDxT = new DxTexture(m_spCTaskCtrl->isDxWin());
@@ -1067,48 +874,7 @@ void CTaskFunc::SetRect(long left, long top, long right, long bottom){
 	m_rect.bottom = bottom;
 	m_pDxT->SetCenter(m_rect);
 }
-/*--------------------------------------------------------
-// ゲームモードで自分が出現するかを判断する関数
---------------------------------------------------------*/
-void CTaskFunc::ModeNew(CTaskCtrl* g_pCTaskCtrl ,BOOL dispflg){
 
-	m_fNew_Count++;
-			//カウントしていく
-	if(m_fNew_Count <= NEW_COUNT_MAX)
-	{
-		m_fNew_Count += NEW_COUNT_PLUS ;
-	}
-	else
-	{
-		//解除
-		m_bNew_Flg = false ;
-		if(dispflg != false)
-		{
-			SetAlpha();
-		}
-		else if(dispflg == false)
-		{
-			SetAlpha(0);
-		}
-	}
-};
-/*--------------------------------------------------------
-// ゲームモードで自分が消えるか消えないかを判断する関数
---------------------------------------------------------*/
-void CTaskFunc::ModeDelete(CTaskCtrl* g_pCTaskCtrl ){
-
-	//もしゲームモードがメインじゃなかったら全部消す
-	if(g_pCTaskCtrl->isGetGameMode() != m_iMode )
-	{
-		//消えるときのカウント
-		m_fDelete_Count += DELETE_COUNT_PLUS;
-		if(m_fDelete_Count >= DELETE_COUNT_MAX)
-		{
-			//削除
-			Delete();
-		}
-	}
-};
 /*=======================================================================
 	カラーセット関数
 	戻り値：ture or false

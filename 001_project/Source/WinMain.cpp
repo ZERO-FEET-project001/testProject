@@ -9,29 +9,22 @@
 #include "DxFont.h"
 #include "DxSound.h"
 #include "CTask.h"
-#include "GameSystem.h"
-#include "TaskFuncs.h"
 
 
 // ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 CTaskCtrl*	g_pCTaskCtrl ;
 BOOL		g_bLoop = TRUE ;	// メインループ制御
-HRESULT		draw(DxWin* pDxw, DxFont* pDxf,FONT pTEXT) ;
+HRESULT		WinDraw(DxWin* pDxw, DxFont* pDxf,FONT pTEXT) ;
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
-          HINSTANCE hPrevInstance,
-          LPTSTR    lpCmdLine,
-          int       nCmdShow)
+int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
 	srand((unsigned) time(NULL));
-
 
 	DxWin*		pDxw ;
 	DxInput*	pDxi ;
 	DxFont*		pDxf ;
 	DxSound*	pDxs ;
-	GameSystem* game;
 
 	MSG msg;
 	HWND hWnd;
@@ -61,31 +54,30 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	//サウンド
 	pDxs = new DxSound() ; //クリエイト
 	pDxs->CreateDirectSound(hWnd);
-	InitDirectSound(hWnd);
-	LoadSoundData(_T("Sound/Title_BGM.wav"),BGM_TITLE);
-	LoadSoundData(_T("Sound/GameMain_BGM.wav"),BGM_MAIN);
-	LoadSoundData(_T("Sound/GameOver_BGM.wav"),BGM_GAMEOVER);
 
 	//マウスカーソルの変更
-	SetCursor( LoadCursorA(0,(LPCSTR)32649) );
+	//SetCursor( LoadCursorA(0,(LPCSTR)32649) );
 
 	// Taskコントローラの初期化
 	g_pCTaskCtrl = new CTaskCtrl(262144) ;//ヒープエリアのサイズ　/　65536
 	g_pCTaskCtrl->CreateSprite( pDxw ) ;
+
 	//マウスカーソルを消す
 	//ShowCursor( FALSE );
-	game = new GameSystem(pDxi,g_pCTaskCtrl,&Mpt);
 
 	// 事前に１回描画してウィンドウ表示
-	hr = draw( pDxw, pDxf,pTEXT ) ;
+	hr = WinDraw( pDxw, pDxf,pTEXT ) ;
 	SetWindowPos(hWnd, NULL, 0,0,0,0, SWP_NOSIZE|SWP_NOMOVE|SWP_SHOWWINDOW);
-	if (FAILED(hr)) { g_bLoop = FALSE ; }
+
+	if (FAILED(hr)) 
+	{ 
+		g_bLoop = FALSE ; 
+	}
 
 	// メイン
 	while( g_bLoop ) 
 	{
-		// メイン メッセージ ループ:
-
+		// メイン メッセージ ループ
 		do
 		{
 			if ( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) ) 
@@ -95,23 +87,23 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	        }
 		}  
 		while ( g_pCTaskCtrl->isSync() );
+
 		// 入力デバイスの読み込み
 		pDxi->GetKeyboard();
 		pDxi->GetMouse() ;
 		GetCursorPos(&Mpt);
 		ScreenToClient(hWnd, &Mpt);
-		game->main();
 
-		// 描画処理
-		sprintf_s ( byteText	// デバッグ表示
-			,"Time:%d\nOver=%d\nHeap use=%d\nTask count=%d\n  "
-			,g_pCTaskCtrl->isTime()  
-			,g_pCTaskCtrl->isTimeOver()  
-			,g_pCTaskCtrl->isUseSize()  
-			,g_pCTaskCtrl->isCount()
-		) ;
+		// デバッグ表示
+		//sprintf_s ( byteText	
+		//	,"Time:%d\nOver=%d\nHeap use=%d\nTask count=%d\n  "
+		//	,g_pCTaskCtrl->isTime()  
+		//	,g_pCTaskCtrl->isTimeOver()  
+		//	,g_pCTaskCtrl->isUseSize()  
+		//	,g_pCTaskCtrl->isCount()
+		//) ;
 
-		hr = draw( pDxw, pDxf,pTEXT ) ; if (FAILED(hr)) break ;	// 描画に失敗したらメインループを停止する
+		hr = WinDraw( pDxw, pDxf,pTEXT ) ; if (FAILED(hr)) break ;	// 描画に失敗したらメインループを停止する
 	}
 
 	// 後処理
@@ -120,13 +112,12 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	_DELETE(pDxw) ;
 	_DELETE(pDxi) ;
 	_DELETE(pDxs) ;
-	//Direct3DSound終了
-	ReleaseSound();
+	
 	return (int) msg.wParam;
 }
 
 // 描画処理
-HRESULT draw(DxWin* pDxw,DxFont* pDxf, FONT pTEXT) {
+HRESULT WinDraw(DxWin* pDxw,DxFont* pDxf, FONT pTEXT) {
 	HRESULT hr;
 
 	hr = pDxw->Begin() ;	// DirectX面の描画開始
@@ -146,27 +137,30 @@ HRESULT draw(DxWin* pDxw,DxFont* pDxf, FONT pTEXT) {
 // ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	switch (message) {
-	case WM_PAINT:
-//		g_pTask->DrawAlone() ;
-		break;
+	switch (message) 
+	{
+		case WM_PAINT:
+			break;
 
-	case WM_ERASEBKGND:
-		return FALSE;
+		case WM_ERASEBKGND:
+			return FALSE;
 
-	case WM_DESTROY:
-		g_bLoop = FALSE ;
-		PostQuitMessage(0);
-		break;
-
-	case WM_KEYDOWN:
-		switch(wParam) {
-		case VK_ESCAPE:
-			//エスケープで終了
-			g_bLoop = 0;
+		case WM_DESTROY:
+			g_bLoop = FALSE ;
 			PostQuitMessage(0);
 			break;
-		}
+
+		case WM_KEYDOWN:
+			if(wParam == VK_ESCAPE)
+			{
+				//エスケープで終了
+				g_bLoop = 0;
+				PostQuitMessage(0);
+			}
+			break;
+
+		default:
+			break;
 	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
